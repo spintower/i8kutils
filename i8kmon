@@ -146,11 +146,12 @@ proc read_i8k_status {} {
         }
     }
 
-    # If AC status is not available read it from procfs
+    # If AC status is not available, assume power supply is connected
     set ac [eval exec "i8kctl ac"]
     if {$ac < 0} {
-        read_ac_status
+        set ac 1
     }
+    set status(ac) $ac
 
     if {$config(verbose) > 0} {
         puts "temp, \[fan state\], \[fan speed\], ac state:  $status(temp) \[$status(lstate) $status(rstate)\] \[$lspeed $rspeed\] $status(ac)"
